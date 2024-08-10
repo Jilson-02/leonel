@@ -1,24 +1,30 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Categorías</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
     <div class="container">
-        <div class="container">
-            <header>
-                <main>
-                    <nav>
-                        <button><a href="/">
-                            Recetas
-                        </a></button>
-                    </nav>
-                </main>
-            </header>
+        <header>
+            <main>
+                <nav>
+                    <a href="/" class="btn btn-link"><i class="fas fa-utensils"></i> Recetas</a>
+                </nav>
+            </main>
+        </header>
         <h1 class="mt-4">Categorías</h1>
         
         <!-- Formulario para agregar una nueva categoría -->
         <form action="/create" method="post" class="mb-4">
             <div class="form-group">
-                <label for="nombre">Categoria</label>
+                <label for="nombre">Categoría</label>
                 <input type="text" id="categoria" name="categoria" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-primary">Agregar Categoría</button>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar Categoría</button>
         </form>
 
         <!-- Tabla para mostrar las categorías existentes -->
@@ -26,23 +32,27 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Categoria</th>
+                    <th>Categoría</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody >
-                <%categorias.forEach((categoria)=>{%>
+            <tbody>
+                <% categorias.forEach(categoria => { %>
                     <tr>
-                        <td><%=categoria.id%></td>
-                        <td><%=categoria.categoria%></td>
+                        <td><%= categoria.id %></td>
+                        <td><%= categoria.categoria %></td>
                         <td>
-                            <a href="/updateP/<%= categoria.id %>" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="/delete/<%= categoria.id %>" class="btn btn-danger btn-sm">Eliminar</a>
+                            <a href="/updateP/<%= categoria.id %>" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                            <a href="/delete/<%= categoria.id %>" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Eliminar</a>
+                        </td>
                     </tr>
-                    <%})%>
+                <% }) %>
             </tbody>
         </table>
     </div>
 
-   
-
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

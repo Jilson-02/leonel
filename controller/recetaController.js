@@ -1,12 +1,10 @@
 import { categoriaModel } from '../model/categoriaModel.js';
 import { recetaModel } from '../model/recetaModel.js';
 
-
 export const createReceta = async (req, res) => {
     try {
         const { nombre, categoria_id } = req.body;
 
-        // Validar que se envíen todos los campos necesarios
         if (!nombre || !categoria_id) {
             res.redirect('/')
         }
@@ -19,27 +17,26 @@ export const createReceta = async (req, res) => {
     }
 };
 
-// Editar una receta existente
 export const updateReceta = async (req, res) => {
     try {
         const id = req.params.id;
-        const {nombre, categoria_id } = req.body;
+        const { nombre, categoria_id } = req.body;
 
-        if(!nombre || !categoria_id){
+        if (!nombre || !categoria_id) {
             res.redirect('/')
         }
 
         const recetaU = await recetaModel.findByPk(id);
         if (!recetaU) {
             res.redirect('/')
-        }else{
+        } else {
             recetaU.set({
                 nombre: nombre,
                 categoria_id: categoria_id
             });
-    
-            recetaU.save(); 
-    
+
+            recetaU.save();
+
             res.redirect('/')
         }
 
@@ -48,7 +45,6 @@ export const updateReceta = async (req, res) => {
     }
 };
 
-// Eliminar una receta
 export const deleteReceta = async (req, res) => {
     try {
         const id = req.params.id;
@@ -56,67 +52,39 @@ export const deleteReceta = async (req, res) => {
         const receta = await recetaModel.findByPk(id);
         if (!receta) {
             res.redirect('/')
-        }else{
+        } else {
             receta.set({
                 status: true
             });
-    
-            receta.save(); 
-            res.redirect('/')
 
+            receta.save();
+            res.redirect('/')
         }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-export const filtrarReceta = async (req, res) => {
-    const { categoria_id } = req.query;
-
+export const obtenerRecetasConCategorias = async (req, res) => {
     try {
-        // Obtener todas las categorías para mostrarlas en el filtro
-        const categorias = await categoriaModel.findAll(); 
+        const categoriaId = req.query.categoria_id;
 
-        let recetas = [];
+        const whereCondition = categoriaId ? { categoria_id: categoriaId, status: false } : { status: false };
 
-        if (categoria_id) {
-            // Buscar la categoría seleccionada
-            //const categoriaSeleccionada = await categoriaModel.findOne({ where: { nombre: categoria } });
+        const recetasConCategorias = await recetaModel.findAll({
+            where: whereCondition,
+            include: {
+                model: categoriaModel,
+                as: 'enlace',
+                attributes: ['categoria']
+            }
+        });
 
-            //if (categoriaSeleccionada) {
-                // Buscar las recetas que coinciden con la categoría seleccionada
-                recetas = await recetaModel.findAll({
-                    where: { categoria_id: categoria_id },
-                    include: categoriaModel
-                });
-           // }
-        } else {
-            // Si no hay filtro, mostrar todas las recetas
-            recetas = await recetaModel.findAll({
-                include: categoriaModel
-            });
-        }
+        const categorias = await categoriaModel.findAll();
 
-        // Pasar las recetas y categorías a la vista
-        res.render('recetas', { recetas, categorias });
+        res.render('receta', { recetas: recetasConCategorias, categorias: categorias });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Error al obtener recetas con categorías:', error);
+        res.status(500).json({ message: 'Error al obtener recetas con categorías' });
     }
 };
-
-
-export const FiltrarRecetas = async (req, res) => {
-    try {
-      const user = await recetaModel.findAll({where:{id:req.params.id}});
-      if(!user){
-        res.status(404).json({message: "user not found"});
-      }
-      res.status(200).json({user});
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
-
-
-
-

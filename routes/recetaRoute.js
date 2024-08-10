@@ -1,10 +1,5 @@
 import express from 'express';
-import { 
-    createReceta, 
-    updateReceta, 
-    deleteReceta,
-    filtrarReceta 
-} from '../controller/recetaController.js';
+import { createReceta, updateReceta, deleteReceta, obtenerRecetasConCategorias } from '../controller/recetaController.js';
 import {recetaModel} from '../model/recetaModel.js'
 import { where } from 'sequelize';
 import { categoriaModel } from '../model/categoriaModel.js';
@@ -43,7 +38,8 @@ router.get('/updateR/:id', async(req, res)=> {
 router.post('/createReceta', createReceta); // Crear una nueva receta
 router.post('/updateReceta/:id', updateReceta); // Actualizar una receta existente
 router.get('/deleteR/:id', deleteReceta); // Eliminar una receta existente
-router.get('/recetas',filtrarReceta);
+
+router.get('/recetasconcategorias', obtenerRecetasConCategorias);
 
 export const recetaRoute=router;
 
