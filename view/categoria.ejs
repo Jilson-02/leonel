@@ -1,0 +1,48 @@
+
+    <div class="container">
+        <div class="container">
+            <header>
+                <main>
+                    <nav>
+                        <button><a href="/">
+                            Recetas
+                        </a></button>
+                    </nav>
+                </main>
+            </header>
+        <h1 class="mt-4">Categorías</h1>
+        
+        <!-- Formulario para agregar una nueva categoría -->
+        <form action="/create" method="post" class="mb-4">
+            <div class="form-group">
+                <label for="nombre">Categoria</label>
+                <input type="text" id="categoria" name="categoria" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Agregar Categoría</button>
+        </form>
+
+        <!-- Tabla para mostrar las categorías existentes -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Categoria</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody >
+                <%categorias.forEach((categoria)=>{%>
+                    <tr>
+                        <td><%=categoria.id%></td>
+                        <td><%=categoria.categoria%></td>
+                        <td>
+                            <a href="/updateP/<%= categoria.id %>" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="/delete/<%= categoria.id %>" class="btn btn-danger btn-sm">Eliminar</a>
+                    </tr>
+                    <%})%>
+            </tbody>
+        </table>
+    </div>
+
+   
+

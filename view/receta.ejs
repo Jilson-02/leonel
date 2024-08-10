@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Recetas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <main>
+                <nav>
+                    <button><a href="/categorias">
+                        Categorias
+                    </a></button>
+                </nav>
+            </main>
+        </header>
+        <h1 class="mt-4">Recetas</h1>
+        
+        <!-- Formulario para filtrar recetas por categoría -->
+   
+
+
+        <!-- Formulario para agregar una nueva receta -->
+        <form action="/createReceta" method="post" class="mb-4">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="categoria_id">Categoría</label>
+                <select id="categoria_id" name="categoria_id" class="form-control" required>
+                    <%categorias.forEach((categoria)=>{%>
+                        <option value="<%=categoria.id%>"><%=categoria.categoria%></option>
+                    <%})%>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Agregar Receta</button>
+        </form>
+    
+
+        <!-- Tabla para mostrar las recetas existentes -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%recetas.forEach((receta)=>{%>
+                    <tr>
+                        <td><%=receta.id%></td>
+                        <td><%=receta.nombre%></td>
+                        <td><%=receta.enlace.categoria%></td>
+                        <td>
+                            <a href="/updateR/<%= receta.id %>" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="/deleteR/<%= receta.id %>" class="btn btn-danger btn-sm">Eliminar</a>
+                        </td>
+                    </tr>
+                <%})%>
+            </tbody>
+        </table>
+
+        <hr> 
+        
+        <form action="/recetas" method="get" class="mb-4">
+            <div class="form-group">
+                <label for="categoria_id">Filtrar por categoria</label>
+                <select id="categoria_id" placeholder="seleccione categoria" name="categoria_id" class="form-control" required>
+                    <%categorias.forEach((categoria)=>{%>
+                        <option value="<%=categoria.id%>"><%=categoria.categoria%></option>
+                    <%})%>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%recetas.forEach((receta)=>{%>
+                    <tr>
+                        <td><%=receta.id%></td>
+                        <td><%=receta.nombre%></td>
+                        <td><%=receta.enlace.categoria%></td>
+                    
+                    </tr>
+                <%})%>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
